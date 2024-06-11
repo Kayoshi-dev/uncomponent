@@ -1,0 +1,77 @@
+:host {
+    --color-primary: #5c5cff;
+    --color-secondary: #7e8a94;
+    --color-background: #f5f5ff;
+
+    --color-primary--error: #ff5c5c;
+    --color-background--error: #fff5f5;
+
+
+    --font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    --icon-size: 24px;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-2px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.file-upload {
+    min-width: 300px;
+    display: flex;
+    gap: 6px;
+    flex-direction: column;
+    margin: 0;
+    padding: 12px;
+    border: 2px dashed #d1d5db;
+    border-radius: 6px;
+    background: none;
+    transition: background 0.3s,
+                border-color 0.3s;
+    font-family: var(--font-family);
+    cursor: pointer;
+}
+
+.file-upload:not(.file-upload--erroring):hover {
+    background: var(--color-background);
+    border-color: var(--color-primary);
+}
+
+.file-upload--dragging {
+    background: var(--color-background);
+    border-color: var(--color-primary);
+}
+
+.file-upload--erroring {
+    background: var(--color-background--error);
+    border-color: var(--color-primary--error);
+    color: var(--color-primary--error);
+}
+
+.file-upload-label {
+    color: inherit;
+    font-weight: bold;
+}
+
+.file-upload-icon ::slotted(svg), svg {
+    width: var(--icon-size);
+    height: var(--icon-size);
+}
+
+.file-upload-icon--dragging {
+    color: var(--color-primary);
+
+    animation: pulse 1s infinite;
+}
+
+.file-upload-description {
+    color: var(--color-secondary);
+    font-style: italic;
+}

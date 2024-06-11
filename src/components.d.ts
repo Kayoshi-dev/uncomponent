@@ -6,6 +6,11 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface FileUpload {
+        "accept": string;
+        "errorTimeout": number;
+        "multiple": boolean;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -21,7 +26,28 @@ export namespace Components {
         "middle": string;
     }
 }
+export interface FileUploadCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLFileUploadElement;
+}
 declare global {
+    interface HTMLFileUploadElementEventMap {
+        "onFileUpload": File[];
+    }
+    interface HTMLFileUploadElement extends Components.FileUpload, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLFileUploadElementEventMap>(type: K, listener: (this: HTMLFileUploadElement, ev: FileUploadCustomEvent<HTMLFileUploadElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLFileUploadElementEventMap>(type: K, listener: (this: HTMLFileUploadElement, ev: FileUploadCustomEvent<HTMLFileUploadElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+    }
+    var HTMLFileUploadElement: {
+        prototype: HTMLFileUploadElement;
+        new (): HTMLFileUploadElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -29,10 +55,17 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "file-upload": HTMLFileUploadElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
+    interface FileUpload {
+        "accept"?: string;
+        "errorTimeout"?: number;
+        "multiple"?: boolean;
+        "onOnFileUpload"?: (event: FileUploadCustomEvent<File[]>) => void;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -48,6 +81,7 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface IntrinsicElements {
+        "file-upload": FileUpload;
         "my-component": MyComponent;
     }
 }
@@ -55,6 +89,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "file-upload": LocalJSX.FileUpload & JSXBase.HTMLAttributes<HTMLFileUploadElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }
